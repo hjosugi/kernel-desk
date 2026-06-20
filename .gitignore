@@ -1,0 +1,19 @@
+# JavaScript / Elm
+node_modules/
+frontend/elm-stuff/
+
+# Gleam
+backend/build/
+
+# Local data
+backend/data/progress.json
+backend/data/*.tmp
+
+# Generated frontend
+backend/priv/static/app.js
+
+# Environment and editor
+.env
+.DS_Store
+.idea/
+.vscode/

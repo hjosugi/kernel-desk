@@ -1,0 +1,14 @@
+name = "kernel_desk"
+version = "0.1.0"
+target = "javascript"
+gleam = ">= 1.17.0"
+licences = ["MIT"]
+description = "A local Git and Linux kernel code learning dashboard"
+
+[dependencies]
+gleam_stdlib = ">= 1.0.0 and < 2.0.0"
+gleam_json = ">= 3.1.0 and < 4.0.0"
+
+[javascript]
+runtime = "node"
+source_maps = true

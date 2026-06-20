@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Local Git and Linux kernel code learning dashboard" />
+    <title>KernelDesk</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div id="app">
+      <main class="boot-message">
+        <h1>KernelDesk</h1>
+        <p>Elm application is loading.</p>
+      </main>
+    </div>
+    <script src="/app.js"></script>
+    <script>
+      if (window.Elm && window.Elm.Main) {
+        window.Elm.Main.init({ node: document.getElementById("app") });
+      } else {
+        document.getElementById("app").innerHTML = `
+          <main class="boot-message">
+            <h1>KernelDesk</h1>
+            <p>Elmのbuildが必要です。</p>
+            <code>npm install && npm run build:frontend</code>
+          </main>
+        `;
+      }
+    </script>
+  </body>
+</html>

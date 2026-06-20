@@ -1,0 +1,22 @@
+{
+  "name": "kernel-desk",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "frontend"
+  ],
+  "scripts": {
+    "build:frontend": "npm --workspace frontend run build",
+    "build:frontend:debug": "npm --workspace frontend run build:debug",
+    "build:backend": "cd backend && gleam build",
+    "check:backend": "cd backend && gleam check",
+    "format:backend": "cd backend && gleam format src",
+    "build": "npm run build:frontend && npm run build:backend",
+    "start": "node scripts/start.mjs",
+    "dev": "npm run build:frontend:debug && npm run start",
+    "verify:local": "node scripts/verify.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
