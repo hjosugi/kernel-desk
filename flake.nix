@@ -25,8 +25,12 @@
           default = pkgs.mkShell {
             packages = [
               pkgs.elmPackages.elm
+              pkgs.elmPackages.elm-format
+              pkgs.elmPackages.elm-language-server
+              pkgs.elmPackages.elm-test
               pkgs.git
               pkgs.gleam
+              pkgs.nil
               pkgs.nodejs_22
             ];
 
@@ -36,6 +40,9 @@
               echo "  npm   $(npm --version)"
               echo "  gleam $(gleam --version)"
               echo "  elm   $(elm --version)"
+              echo "  elm-format        $(command -v elm-format)"
+              echo "  elm-test          $(command -v elm-test)"
+              echo "  elm-language-server $(command -v elm-language-server)"
             '';
           };
         });

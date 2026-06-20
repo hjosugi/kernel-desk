@@ -16,4 +16,5 @@ backend/priv/static/app.js
 .env
 .DS_Store
 .idea/
-.vscode/
+.vscode/*
+!.vscode/extensions.json

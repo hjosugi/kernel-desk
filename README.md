@@ -56,6 +56,18 @@ nix develop
 
 Nix shell内ではElm compilerもPATHから使えるため、現在の構成では`npm install`なしでフロントエンドをbuildできます。npm経由でElmを入れたい場合やNixを使わない場合は、従来どおり`npm install`を実行してください。
 
+### VS Code + Elm
+
+VS Codeで開発する場合は、推奨拡張としてElm language server、Nix IDE、direnvを提示しています。Nixを使う場合は、リポジトリ直下で一度だけdirenvを許可すると、VS Codeが`flake.nix`のElm toolingを拾いやすくなります。
+
+```bash
+direnv allow
+```
+
+`flake.nix`にはElm compilerに加えて、`elm-format`、`elm-test`、`elm-language-server`を入れています。これにより、VS Code上の診断、補完、formatをnpm global installなしで揃えられます。
+
+このアプリはHTTP APIを使うため、Elmの入口には`Browser.sandbox`や`Browser.document`ではなく`Browser.element`を使っています。`sandbox`は`Cmd`なしの小さな状態管理、`document`はページタイトルなどドキュメント全体も管理したい場合に向いています。
+
 ## すぐに試す
 
 実際のLinuxリポジトリをまだ用意していない場合は、同梱の教育用ソースを使えます。
