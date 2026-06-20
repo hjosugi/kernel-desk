@@ -1,0 +1,31 @@
+{
+  "folders": [
+    {
+      "name": "frontend",
+      "path": "frontend"
+    },
+    {
+      "name": "backend",
+      "path": "backend"
+    },
+    {
+      "name": "scripts",
+      "path": "scripts"
+    },
+    {
+      "name": "docs",
+      "path": "docs"
+    },
+    {
+      "name": "sample",
+      "path": "sample"
+    }
+  ],
+  "settings": {
+    "editor.linkedEditing": true,
+    "[elm]": {
+      "editor.defaultFormatter": "Elmtooling.elm-ls-vscode",
+      "editor.formatOnSave": true
+    }
+  }
+}

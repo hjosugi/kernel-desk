@@ -66,6 +66,14 @@ direnv allow
 
 `flake.nix`にはElm compilerに加えて、`elm-format`、`elm-test`、`elm-language-server`を入れています。これにより、VS Code上の診断、補完、formatをnpm global installなしで揃えられます。
 
+Elm Language Serverが`KernelDesk.*`モジュールを解決できず赤線を出す場合は、VS Codeでリポジトリrootをそのまま開く代わりに、同梱のworkspaceを開いてください。`frontend`が独立したworkspace folderになり、`frontend/elm.json`をrootとして認識しやすくなります。
+
+```bash
+code kernel-desk.code-workspace
+```
+
+それでも残る場合は、VS Codeで`Elm: Restart Elm Language Server`または`Developer: Reload Window`を実行してください。
+
 このアプリはHTTP APIを使うため、Elmの入口には`Browser.sandbox`や`Browser.document`ではなく`Browser.element`を使っています。`sandbox`は`Cmd`なしの小さな状態管理、`document`はページタイトルなどドキュメント全体も管理したい場合に向いています。
 
 ## すぐに試す
