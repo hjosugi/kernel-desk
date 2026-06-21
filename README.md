@@ -43,7 +43,7 @@ nix run .#dev
 
 ```bash
 direnv allow
-code kernel-desk.code-workspace
+code form-panic-bureau.code-workspace
 ```
 
 推奨拡張はElm Language Server、Nix IDE、direnvです。workspace内のtaskは`nix develop --command ...`経由で動きます。
@@ -53,5 +53,5 @@ code kernel-desk.code-workspace
 `main`へpushするとGitHub Pages workflowが`dist/`を公開します。
 
 ```text
-https://hjosugi.github.io/kernel-desk/
+https://hjosugi.github.io/form-panic-bureau/
 ```
