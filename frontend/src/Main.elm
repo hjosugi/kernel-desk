@@ -1,9 +1,10 @@
 module Main exposing (main)
 
 import Browser
-import FormPanic.Rules exposing (accepted)
-import FormPanic.Types exposing (Flags, Model, Msg(..), Screen(..), initialModel)
+import FormPanic.Rules exposing (accepted, configGenerator)
+import FormPanic.Types exposing (Flags, Model, Msg(..), Screen(..), currentFace, initialModel)
 import FormPanic.View exposing (view)
+import Random
 import Time
 
 
@@ -21,7 +22,10 @@ subscriptions : Model -> Sub Msg
 subscriptions model =
     case model.screen of
         Playing ->
-            Time.every 1000 Tick
+            Sub.batch
+                [ Time.every 1000 Tick
+                , Time.every 850 Flip
+                ]
 
         _ ->
             Sub.none
@@ -31,9 +35,15 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         Start ->
+            ( { model | message = "受付番号を発行しています..." }
+            , Random.generate GotConfig configGenerator
+            )
+
+        GotConfig config ->
             ( { initialModel
                 | screen = Playing
-                , message = "受付開始。フォームは協力してくれません。"
+                , config = config
+                , message = "受付開始。今日のルールは左のチェックリストを確認してください。"
               }
             , Cmd.none
             )
@@ -43,6 +53,9 @@ update msg model =
 
         Tick _ ->
             tick model
+
+        Flip _ ->
+            ( { model | flip = model.flip + 1 }, Cmd.none )
 
         FullNameChanged value ->
             ( { model | fullName = value }, Cmd.none )
@@ -64,9 +77,6 @@ update msg model =
 
         SliderChanged value ->
             ( { model | slider = value }, Cmd.none )
-
-        CaptchaChanged value ->
-            ( { model | captcha = value }, Cmd.none )
 
         ButtonDodged ->
             dodgeButton model
@@ -111,7 +121,12 @@ dodgeButton model =
 
 submit : Model -> ( Model, Cmd Msg )
 submit model =
-    if accepted model then
+    if not (accepted model) then
+        ( { model | message = "まだ不備があります。左のチェックリストを疑ってください。" }
+        , Cmd.none
+        )
+
+    else if currentFace model.flip == "ACCEPT" then
         ( { model
             | screen = Won
             , message = "ACCEPTED。理不尽フォームを突破しました。"
@@ -120,4 +135,9 @@ submit model =
         )
 
     else
-        ( { model | message = "まだ不備があります。左のチェックリストを疑ってください。" }, Cmd.none )
+        ( { model
+            | misclicks = model.misclicks + 1
+            , message = currentFace model.flip ++ " を押してしまいました。ボタンが ACCEPT になる瞬間を狙ってください。"
+          }
+        , Cmd.none
+        )

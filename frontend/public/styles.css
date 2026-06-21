@@ -352,11 +352,25 @@ input[type="range"] {
 .action-zone {
   position: relative;
   display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 110px;
+  padding-top: 18px;
+}
+
+.submit-hint {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-align: right;
+}
+
+.action-buttons {
+  display: flex;
   align-items: center;
   justify-content: flex-end;
   gap: 12px;
-  min-height: 94px;
-  padding-top: 18px;
 }
 
 .primary-action,
@@ -379,8 +393,9 @@ input[type="range"] {
   box-shadow: 0 8px 0 #2f3a41;
 }
 
-.primary-action:hover:not(:disabled) {
-  background: var(--accent-strong);
+.primary-action:hover:not(:disabled),
+.secondary-action:hover:not(:disabled) {
+  filter: brightness(1.12);
 }
 
 .secondary-action {
@@ -389,11 +404,18 @@ input[type="range"] {
 }
 
 .moving-action {
-  min-width: 118px;
+  min-width: 128px;
 }
 
-.moving-action.ready {
+/* Only the ACCEPT face is the green "go" state. The DENY/REJECT face uses a
+   neutral slate so it reads as "not now" without the confusing red flash. */
+.moving-action.ready.face-accept {
   background: var(--green);
+}
+
+.moving-action.ready.face-deny {
+  background: #34424b;
+  color: #f3efe4;
 }
 
 .result-card.won {

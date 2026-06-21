@@ -1,7 +1,7 @@
 module FormPanic.View exposing (view)
 
 import FormPanic.Rules exposing (accepted, rules)
-import FormPanic.Types exposing (Model, Msg(..), Rule, Screen(..), timeLimit)
+import FormPanic.Types exposing (Model, Msg(..), Rule, Screen(..), currentFace, timeLimit)
 import Html exposing (Html, button, div, h1, h2, header, input, label, li, main_, option, p, section, select, small, span, strong, text, ul)
 import Html.Attributes exposing (checked, class, classList, disabled, for, id, placeholder, selected, style, type_, value)
 import Html.Events exposing (on, onCheck, onClick, onInput)
@@ -92,7 +92,7 @@ viewProgress model =
     div [ class "card" ]
         [ h2 [] [ text "Progress" ]
         , div [ class "big-count" ] [ text (String.fromInt done ++ "/" ++ String.fromInt total) ]
-        , p [] [ text "全部そろったら Accept が押せます。" ]
+        , p [] [ text "毎回ルールが変わります。チェックリストどおりに埋めてください。" ]
         ]
 
 
@@ -135,7 +135,7 @@ viewReady : Html Msg
 viewReady =
     div [ class "ready-card" ]
         [ h2 [] [ text "受付番号 404" ]
-        , p [] [ text "フォームを埋めて Accept を押すだけです。たぶん。ボタンは少しだけ逃げます。" ]
+        , p [] [ text "ルールは毎回ランダムです。左のチェックリストを全部そろえて、ボタンが ACCEPT になった瞬間に押してください。ボタンは少しだけ逃げます。" ]
         , button [ type_ "button", class "primary-action", onClick Start ] [ text "Start" ]
         ]
 
@@ -157,8 +157,6 @@ viewForm model =
                     , option [ value "window-4", selected (model.window == "window-4") ] [ text "4番: 偉そう" ]
                     ]
                 ]
-            , field "CAPTCHA"
-                [ input [ type_ "text", placeholder "PANIC", value model.captcha, onInput CaptchaChanged ] [] ]
             , field ("番号つまみ: " ++ model.slider)
                 [ input [ type_ "range", Html.Attributes.min "0", Html.Attributes.max "100", value model.slider, onInput SliderChanged ] [] ]
             , div [ class "checks" ]
@@ -167,17 +165,55 @@ viewForm model =
                 , checkRow "decoy" "同意を取り消します" model.decoy ToggleDecoy
                 ]
             ]
-        , div [ class "action-zone" ]
+        , viewActions model
+        ]
+
+
+viewActions : Model -> Html Msg
+viewActions model =
+    let
+        ready =
+            accepted model
+
+        face =
+            currentFace model.flip
+
+        isAccept =
+            face == "ACCEPT"
+    in
+    div [ class "action-zone" ]
+        [ p [ class "submit-hint" ]
+            [ text
+                (if ready then
+                    "ボタンが ACCEPT に変わった瞬間だけ受理できます。"
+
+                 else
+                    "チェックリストを全部そろえると Accept できます。"
+                )
+            ]
+        , div [ class "action-buttons" ]
             [ button [ type_ "button", class "secondary-action", onClick Restart ] [ text "Reset" ]
             , button
                 [ type_ "button"
-                , classList [ ( "primary-action moving-action", True ), ( "ready", accepted model ) ]
-                , disabled (not (accepted model))
+                , classList
+                    [ ( "primary-action moving-action", True )
+                    , ( "ready", ready )
+                    , ( "face-accept", ready && isAccept )
+                    , ( "face-deny", ready && not isAccept )
+                    ]
+                , disabled (not ready)
                 , onClick Submit
                 , style "transform" (buttonTransform model)
                 , on "mouseenter" (Decode.succeed ButtonDodged)
                 ]
-                [ text "Accept" ]
+                [ text
+                    (if ready then
+                        face
+
+                     else
+                        "Accept"
+                    )
+                ]
             ]
         ]
 
@@ -217,7 +253,17 @@ viewResult won model =
                     "時間切れです。フォームは勝ち誇っています。"
                 )
             ]
-        , p [] [ text ("残り " ++ String.fromInt model.secondsLeft ++ " 秒 / ボタン逃走 " ++ String.fromInt model.dodges ++ " 回") ]
+        , p []
+            [ text
+                ("残り "
+                    ++ String.fromInt model.secondsLeft
+                    ++ " 秒 / ボタン逃走 "
+                    ++ String.fromInt model.dodges
+                    ++ " 回 / 誤爆 "
+                    ++ String.fromInt model.misclicks
+                    ++ " 回"
+                )
+            ]
         , button [ type_ "button", class "primary-action", onClick Start ] [ text "もう一度" ]
         ]
 
