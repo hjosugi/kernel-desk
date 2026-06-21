@@ -1,19 +1,4 @@
-module KernelDesk.Types exposing
-    ( ApiPayload(..)
-    , Flags
-    , GitChange
-    , Lesson
-    , Loadable(..)
-    , Model
-    , Msg(..)
-    , Notice
-    , NoticeKind(..)
-    , Progress
-    , ProgressStatus(..)
-    , ProgressSummary
-    , RepoSnapshot
-    , SourceFile
-    )
+module KernelDesk.Types exposing (..)
 
 import Dict exposing (Dict)
 import Http
