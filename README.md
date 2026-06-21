@@ -62,6 +62,7 @@ VS Codeで開発する場合は、推奨拡張としてElm language server、Nix
 
 ```bash
 direnv allow
+code kernel-desk.code-workspace
 ```
 
 `flake.nix`にはElm compilerに加えて、`elm-format`、`elm-test`、`elm-language-server`を入れています。これにより、VS Code上の診断、補完、formatをnpm global installなしで揃えられます。
@@ -78,12 +79,19 @@ code kernel-desk.code-workspace
 
 syntax highlightがElmにならない場合は、推奨拡張を入れたあとで`Developer: Reload Window`を実行してください。同梱workspaceでは`*.elm`をElmとして関連付け、`elm`、`elm-format`、`elm-test`のPATHをElm LSへ明示しています。右下の言語モードが`Elm`以外なら、`Change Language Mode`から`Elm`を選んでください。
 
-VS Codeからよく使う操作は`Tasks: Run Task`で呼べます。
+VS Codeからよく使う操作は`Tasks: Run Task`で呼べます。Nixを使う場合は、`direnv allow`後にworkspaceを開くとタスクも同じtoolingを使いやすくなります。
 
 - `elm: build debug`
 - `elm: build optimized`
 - `backend: check`
 - `app: dev server`
+
+通常の操作は次の流れです。
+
+1. `elm: build debug`でElmの型とbuildを確認
+2. `backend: check`でGleam backendを確認
+3. `app: dev server`で`http://127.0.0.1:4000`を起動
+4. GitHub Pages向けの静的demoは`main`へpushするとActionsで自動deploy
 
 このアプリはHTTP APIを使うため、Elmの入口には`Browser.sandbox`や`Browser.document`ではなく`Browser.element`を使っています。`sandbox`は`Cmd`なしの小さな状態管理、`document`はページタイトルなどドキュメント全体も管理したい場合に向いています。
 

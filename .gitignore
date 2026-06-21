@@ -20,3 +20,4 @@ backend/priv/static/app.js
 .vscode/*
 !.vscode/extensions.json
 !.vscode/tasks.json
+!.vscode/tasks.json

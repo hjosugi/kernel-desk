@@ -18,7 +18,7 @@
     {
       "label": "backend: check",
       "type": "shell",
-      "command": "mise exec -- npm run check:backend",
+      "command": "npm run check:backend",
       "group": "test",
       "problemMatcher": []
     },
