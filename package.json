@@ -14,7 +14,10 @@
     "build": "npm run build:frontend && npm run build:backend",
     "start": "node scripts/start.mjs",
     "dev": "npm run build:frontend:debug && npm run start",
-    "verify:local": "node scripts/verify.mjs"
+    "verify:local": "node scripts/verify.mjs",
+    "linux:clone": "node scripts/linux-repo.mjs clone",
+    "linux:start": "node scripts/linux-repo.mjs start",
+    "linux:dev": "node scripts/linux-repo.mjs dev"
   },
   "engines": {
     "node": ">=20"

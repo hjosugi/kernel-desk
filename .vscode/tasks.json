@@ -28,6 +28,20 @@
       "command": "npm run dev",
       "isBackground": true,
       "problemMatcher": []
+    },
+    {
+      "label": "linux: clone torvalds/linux",
+      "type": "shell",
+      "command": "npm run linux:clone",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "linux: start KernelDesk",
+      "type": "shell",
+      "command": "npm run linux:start",
+      "isBackground": true,
+      "problemMatcher": []
     }
   ]
 }
