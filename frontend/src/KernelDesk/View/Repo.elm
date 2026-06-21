@@ -8,24 +8,38 @@ import KernelDesk.Types exposing (GitChange, Loadable(..), Model, Msg(..), RepoS
 
 viewRepoCard : Model -> Html Msg
 viewRepoCard model =
-    section [ class "card" ]
-        [ div [ class "card-header" ]
-            [ h2 [] [ text "Local repository" ]
-            , button [ class "small-button", type_ "button", onClick RefreshRepo ] [ text "Refresh" ]
+    if model.demoMode then
+        section [ class "card" ]
+            [ div [ class "card-header" ]
+                [ h2 [] [ text "Static demo" ] ]
+            , div [ class "card-body" ]
+                [ div [ class "warning-state" ]
+                    [ p [] [ text "GitHub Pages版は静的demoです。ブラウザからローカルGit repositoryやgitコマンドにはアクセスできません。" ]
+                    , p [] [ text "本物のrepositoryを見るには、ローカルserverを起動してKERNEL_REPO_PATHへGit repositoryを指定してください。" ]
+                    , p [ class "mono" ] [ text "KERNEL_REPO_PATH=$HOME/src/linux npm start" ]
+                    ]
+                ]
             ]
-        , case model.repo of
-            Idle ->
-                div [ class "empty-state" ] [ text "Repository is not loaded." ]
 
-            Loading ->
-                div [ class "loading-state" ] [ text "Git情報を読み込み中です。" ]
+    else
+        section [ class "card" ]
+            [ div [ class "card-header" ]
+                [ h2 [] [ text "Local repository" ]
+                , button [ class "small-button", type_ "button", onClick RefreshRepo ] [ text "Refresh" ]
+                ]
+            , case model.repo of
+                Idle ->
+                    div [ class "empty-state" ] [ text "Repository is not loaded." ]
 
-            Failed message ->
-                div [ class "error-state" ] [ text message ]
+                Loading ->
+                    div [ class "loading-state" ] [ text "Git情報を読み込み中です。" ]
 
-            Loaded repo ->
-                viewRepoSnapshot repo
-        ]
+                Failed message ->
+                    div [ class "error-state" ] [ text message ]
+
+                Loaded repo ->
+                    viewRepoSnapshot repo
+            ]
 
 
 viewRepoSnapshot : RepoSnapshot -> Html msg

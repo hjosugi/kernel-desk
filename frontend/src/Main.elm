@@ -56,7 +56,7 @@ initDemo =
                 , selectedLesson = Just lesson
                 , filePath = lesson.path
                 , source = Demo.source lesson.path
-                , notice = Just (Notice.attention "Demo mode: GitHub PagesではローカルAPIなしでサンプルだけ表示しています。")
+                , notice = Just (Notice.attention "GitHub Pages版は静的demoです。本物のGit repositoryはローカルserverで開いてください。")
               }
             , Cmd.none
             )
