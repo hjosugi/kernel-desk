@@ -2,12 +2,9 @@
   "name": "kernel-desk",
   "version": "0.1.0",
   "private": true,
-  "workspaces": [
-    "frontend"
-  ],
   "scripts": {
-    "build:frontend": "npm --workspace frontend run build",
-    "build:frontend:debug": "npm --workspace frontend run build:debug",
+    "build:frontend": "node frontend/scripts/build.mjs --optimize",
+    "build:frontend:debug": "node frontend/scripts/build.mjs",
     "build:backend": "cd backend && gleam build",
     "check:backend": "cd backend && gleam check",
     "format:backend": "cd backend && gleam format src",

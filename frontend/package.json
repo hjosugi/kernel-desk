@@ -1,9 +1,0 @@
-{
-  "name": "kernel-desk-frontend",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "build": "node scripts/build.mjs --optimize",
-    "build:debug": "node scripts/build.mjs"
-  }
-}

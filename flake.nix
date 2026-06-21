@@ -5,7 +5,8 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
   };
 
-  outputs = { nixpkgs, ... }:
+  outputs =
+    { nixpkgs, ... }:
     let
       systems = [
         "aarch64-darwin"
@@ -24,11 +25,12 @@
         pkgs.git
         pkgs.gleam
         pkgs.nil
-        pkgs.nixfmt-rfc-style
+        pkgs.nixfmt
         pkgs.nodejs_22
       ];
 
-      kernelDeskApp = pkgs: name: command:
+      kernelDeskApp =
+        pkgs: name: command:
         let
           script = pkgs.writeShellApplication {
             name = "kernel-desk-${name}";
@@ -42,7 +44,8 @@
         };
     in
     {
-      apps = forAllSystems (system:
+      apps = forAllSystems (
+        system:
         let
           pkgs = import nixpkgs { inherit system; };
           app = kernelDeskApp pkgs;
@@ -60,9 +63,11 @@
           linux-clone-shallow = app "linux-clone-shallow" "npm run linux:clone:shallow";
           linux-start = app "linux-start" "npm run linux:start";
           linux-dev = app "linux-dev" "npm run linux:dev";
-        });
+        }
+      );
 
-      devShells = forAllSystems (system:
+      devShells = forAllSystems (
+        system:
         let
           pkgs = import nixpkgs { inherit system; };
         in
@@ -79,15 +84,22 @@
               echo "  elm-format        $(command -v elm-format)"
               echo "  elm-test          $(command -v elm-test)"
               echo "  elm-language-server $(command -v elm-language-server)"
-              echo "  nixfmt-rfc-style  $(command -v nixfmt)"
+              echo "  nixfmt            $(command -v nixfmt)"
             '';
           };
-        });
+        }
+      );
 
-      formatter = forAllSystems (system:
+      formatter = forAllSystems (
+        system:
         let
           pkgs = import nixpkgs { inherit system; };
         in
-        pkgs.nixfmt-rfc-style);
+        pkgs.writeShellApplication {
+          name = "kernel-desk-fmt";
+          runtimeInputs = [ pkgs.nixfmt ];
+          text = "nixfmt flake.nix";
+        }
+      );
     };
 }
